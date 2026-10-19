@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Initiative Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F7F9;--card:#fff;--text:#14161B;--muted:#6B7280;--border:#E5E7EB;--focus:#3B5BDB;
+--on:#138A55;--on-bg:#E8F6EF;--risk:#B45309;--risk-bg:#FEF3C7;--risk-bar:#F59E0B;--off:#C2410C;--off-bg:#FFE4D6;--done:#4B5563;--done-bg:#EEF0F3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,system-ui,sans-serif}
+.wrap{max-width:1140px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:22px;margin:0;letter-spacing:-.01em} h2{font-size:14px;margin:0 0 12px}
+.sub{font-size:12px;color:var(--muted)} .muted{color:var(--muted)}
+.badge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px;background:#FEF3C7;color:#92400E;margin-left:8px;vertical-align:middle}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px}
+.filters{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin:18px 0 14px}
+.flabel{font-size:12px;color:var(--muted);margin-right:6px}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:2px}
+.seg button{border:0;background:none;font:inherit;font-size:13px;padding:5px 10px;border-radius:6px;cursor:pointer;color:var(--muted)}
+.seg button.on{background:var(--text);color:#fff}
+select,input[type=search]{font:inherit;font-size:13px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card)}
+button:focus-visible,select:focus-visible,input:focus-visible,.tile:focus-visible,.wk:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.top{display:grid;grid-template-columns:1fr 1fr 1.1fr;gap:12px;margin-bottom:12px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile{border-radius:10px;padding:10px 12px;cursor:pointer;border:2px solid transparent;transition:opacity .15s}
+.tile b{display:block;font-size:26px;line-height:1.1} .tile span{font-size:12px;font-weight:600} .tile small{display:block;font-size:11px;opacity:.85}
+.tile.off{background:var(--off-bg);color:var(--off)} .tile.risk{background:var(--risk-bg);color:var(--risk)}
+.tile.on{background:var(--on-bg);color:var(--on)} .tile.done{background:var(--done-bg);color:var(--done)}
+.tile.sel{border-color:currentColor} .tile.dim{opacity:.45}
+.trend{display:flex;align-items:flex-end;gap:10px;height:150px}
+.wk{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;cursor:pointer;background:none;border:0;padding:0;font:inherit}
+.stack{width:100%;max-width:36px;height:120px;display:flex;flex-direction:column;border-radius:6px;overflow:hidden;opacity:.55;transition:opacity .15s}
+.wk.sel .stack,.wk:hover .stack{opacity:1}
+.stack .off{background:var(--off)} .stack .risk{background:var(--risk-bar)} .stack .on{background:#34B37A} .stack .done{background:#C9CDD3}
+.wk small{font-size:11px;color:var(--muted);white-space:nowrap} .wk.sel small{color:var(--text);font-weight:600}
+.legend{font-size:12px;color:var(--muted);margin-top:8px} .legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin:0 4px 0 10px}
+.dec ul{margin:0;padding-left:18px} .dec li{margin-bottom:8px}
+.tablebar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--border);vertical-align:top}
+th{color:var(--muted);font-weight:500;font-size:12px}
+.pill{font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pill.on{background:var(--on-bg);color:var(--on)} .pill.risk{background:var(--risk-bg);color:var(--risk)}
+.pill.off{background:var(--off-bg);color:var(--off)} .pill.done{background:var(--done-bg);color:var(--done)}
+.steps{white-space:nowrap} .steps i{display:inline-block;width:14px;height:6px;border-radius:3px;background:var(--border);margin-right:3px} .steps i.lit{background:var(--off)}
+tr.prow{cursor:pointer} tr.prow:hover td{background:#FAFAFB} tr.prow.open td{background:#F7F8FA}
+.row-btn{all:unset;cursor:pointer;font-weight:600}
+.caret{display:inline-block;width:12px;color:var(--muted);transition:transform .15s} tr.open .caret{transform:rotate(90deg)}
+tr.detail td{background:#F7F8FA;padding:4px 16px 18px}
+.dgrid{display:grid;grid-template-columns:1fr 1fr 1.3fr;gap:18px}
+.lab{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.strip{display:flex;gap:6px} .strip div{text-align:center;font-size:11px;color:var(--muted)}
+.strip i{display:block;width:34px;height:22px;border-radius:5px;margin-bottom:3px}
+.strip i.on{background:#34B37A} .strip i.risk{background:var(--risk-bar)} .strip i.off{background:var(--off)} .strip i.done{background:#C9CDD3}
+.prog{position:relative;height:12px;background:#EEF0F3;border-radius:6px;margin:8px 0 4px}
+.prog .done-bar{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:var(--text)}
+.prog .plan{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--off)}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13px;margin-top:10px} .kv span:nth-child(odd){color:var(--muted)}
+.msg{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px}
+.copy{margin-top:8px;font:inherit;font-size:12px;border:1px solid var(--border);background:var(--card);border-radius:6px;padding:4px 10px;cursor:pointer}
+.ladder{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;margin-top:12px}
+.ladder div{flex:1;min-width:150px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:8px 10px}
+.tw{overflow-x:auto} .empty{padding:18px;text-align:center;color:var(--muted)}
+footer{color:var(--muted);font-size:12px;margin-top:18px}
+@media (max-width:900px){.top,.dgrid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Initiative tracker <span class="badge">Demo data</span></h1>
+  <div class="sub">Every project rated against the same written rules, every Monday · slipping projects get escalated in three steps</div>
+
+  <div class="filters">
+    <div><span class="flabel">Market</span><div class="seg" id="f-market"></div></div>
+    <div><span class="flabel">Workstream</span><select id="f-ws" aria-label="Workstream"></select></div>
+  </div>
+
+  <div class="top">
+    <div class="card"><h2 id="tiles-title"></h2><div class="tiles" id="tiles"></div></div>
+    <div class="card"><h2>Status by week <span class="muted" style="font-weight:400">· click a week</span></h2>
+      <div class="trend" id="trend"></div>
+      <div class="legend"><i style="background:var(--off)"></i>Off track<i style="background:var(--risk-bar)"></i>At risk<i style="background:#34B37A"></i>On track<i style="background:#C9CDD3"></i>Done</div></div>
+    <div class="card dec"><h2>Decisions needed at exec review</h2><ul id="decisions"></ul>
+      <h2 style="margin-top:14px">Escalated this week</h2><ul id="escalated"></ul></div>
+  </div>
+
+  <div class="card">
+    <div class="tablebar">
+      <h2 style="margin:0">Initiatives <span class="muted" style="font-weight:400" id="count"></span></h2>
+      <input type="search" id="q" placeholder="Search project or owner" aria-label="Search projects">
+    </div>
+    <div class="tw"><table id="ptable"></table></div>
+    <div class="lab" style="margin-top:14px">What happens when a project stays off track</div><div class="ladder" style="margin-top:6px"><div><b>Level 1</b><br>Nudge owner, recovery plan by Friday</div><div><b>Level 2</b><br>Flag to lead, joint review</div>
+      <div><b>Level 3</b><br>Exec review: re-scope, re-resource or re-date</div><div><b>Fair pace</b><br>Next level only if still off track 2+ weeks later</div></div>
+  </div>
+  <footer>Every project, person and number here is invented. Click any project for its six-week history, progress against plan, and the nudge drafted for its owner.</footer>
+</div>
+
+<script>
+const MARKETS = ["Japan", "Korea", "India", "Southeast Asia", "Regional"];
+const STATUSES = ["Off track", "At risk", "On track", "Done"];
+const WEEK_LABEL = { "New step 1": "Owner nudged", "New step 2": "Flagged to lead", "New step 3": "To exec review",
+  "Back on exec agenda": "Exec review again", "Reminder": "Reminder", "Heads-up": "Heads-up", "Back on track": "Back on track",
+  "Reset": "Cleared", "Closed": "Closed" };
+const CLS = { "Off track": "off", "At risk": "risk", "On track": "on", "Done": "done" };
+let D, state = { week: null, market: "All", ws: "All", status: null, q: "", open: null };
+
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmtDate = (d, long) => new Date(d + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: long ? "long" : "short", timeZone: "UTC" });
+const days = (a, b) => Math.round((new Date(b + "T00:00:00Z") - new Date(a + "T00:00:00Z")) / 864e5);
+
+function rowsFor(w) {
+  return (D.rows[w] || []).map(r => ({ ...r, ...D.projects[r.id] }))
+    .filter(r => (state.market === "All" || r.market === state.market) && (state.ws === "All" || r.workstream === state.ws));
+}
+const prevWeek = () => { const i = D.weeks.indexOf(state.week); return i > 0 ? D.weeks[i - 1] : null; };
+
+function renderTiles(rows) {
+  const pw = prevWeek(), prev = pw ? rowsFor(pw) : [];
+  const c = s => rows.filter(r => r.status === s).length, p = s => prev.filter(r => r.status === s).length;
+  document.getElementById("tiles-title").textContent = `Week of ${fmtDate(state.week, true)}`;
+  document.getElementById("tiles").innerHTML = STATUSES.map(s => {
+    const d = c(s) - p(s), cls = state.status ? (state.status === s ? "sel" : "dim") : "";
+    return `<div class="tile ${CLS[s]} ${cls}" data-s="${s}" role="button" tabindex="0" aria-label="Show ${s}">
+      <b>${c(s)}</b><span>${s}</span><small>${pw ? (d >= 0 ? "+" : "") + d + " vs last week" : "first week"}</small></div>`;
+  }).join("");
+  document.querySelectorAll(".tile").forEach(el => {
+    const go = () => { state.status = state.status === el.dataset.s ? null : el.dataset.s; state.open = null; render(); };
+    el.onclick = go; el.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } };
+  });
+}
+
+function renderTrend() {
+  document.getElementById("trend").innerHTML = D.weeks.map(w => {
+    const rs = rowsFor(w), n = s => rs.filter(r => r.status === s).length;
+    const parts = ["Off track", "At risk", "On track", "Done"].map(s => `<div class="${CLS[s]}" style="flex:${n(s)}"></div>`).join("");
+    return `<button class="wk ${w === state.week ? "sel" : ""}" data-w="${w}" aria-label="Week of ${fmtDate(w)}: ${n("Off track")} off track, ${n("At risk")} at risk">
+      <div class="stack">${parts}</div><small>${fmtDate(w)}</small></button>`;
+  }).join("");
+  document.querySelectorAll(".wk").forEach(b => b.onclick = () => { state.week = b.dataset.w; state.open = null; render(); });
+}
+
+function renderLists(rows) {
+  const li = r => `<li><b>${esc(r.name)}</b> <span class="muted">· ${esc(r.market)} · ${esc(r.owner)}, lead ${esc(r.lead)}</span><br><span class="sub">${esc(r.why)}</span></li>`;
+  const dec = rows.filter(r => r.step === 3 && r.status === "Off track");
+  const esc_ = rows.filter(r => r.week === "New step 1" || r.week === "New step 2");
+  document.getElementById("decisions").innerHTML = dec.map(li).join("") || `<li class="muted">None this week.</li>`;
+  document.getElementById("escalated").innerHTML = esc_.map(li).join("") || `<li class="muted">None this week.</li>`;
+}
+
+function detail(r) {
+  const strip = D.weeks.map(w => { const x = (D.rows[w] || []).find(y => y.id === r.id);
+    return `<div><i class="${x ? CLS[x.status] : ""}" title="${fmtDate(w)}: ${x ? x.status : "no data"}"></i>${fmtDate(w)}</div>`; }).join("");
+  const total = days(r.start, r.due), gone = Math.min(Math.max(days(r.start, state.week), 0), total);
+  const plan = total ? Math.round(100 * gone / total) : 0;
+  const msg = (D.messages[state.week] || {})[r.name];
+  const stale = r.last_update ? days(r.last_update, state.week) : null;
+  return `<tr class="detail"><td colspan="6"><div class="dgrid">
+    <div><div class="lab">Six-week history</div><div class="strip">${strip}</div>
+      <div class="lab" style="margin-top:14px">This week</div><div>${esc(r.action || "No action needed")}</div></div>
+    <div><div class="lab">Progress vs plan</div>
+      <div class="prog" title="Plan says ${plan}% by now"><div class="done-bar" style="width:${r.progress}%"></div><div class="plan" style="left:${plan}%"></div></div>
+      <div class="sub">${r.progress}% done · plan says ${plan}% by now (red line)</div>
+      <div class="kv"><span>Due</span><span>${fmtDate(r.due, true)}</span><span>Last update</span><span>${stale == null ? "–" : stale + " days ago"}</span>
+      <span>Open blockers</span><span>${r.blockers}${r.blocker_note ? " · " + esc(r.blocker_note) : ""}</span><span>Lead</span><span>${esc(r.lead)}</span></div></div>
+    <div><div class="lab">Nudge drafted for ${esc(r.owner)}</div>${msg ? `<div class="msg" id="msg-${r.id}">${esc(msg)}</div><button class="copy" data-copy="msg-${r.id}">Copy message</button>` : `<div class="sub">No message needed this week.</div>`}</div>
+  </div></td></tr>`;
+}
+
+function renderTable(rows) {
+  const q = state.q.trim().toLowerCase(), order = { "Off track": 0, "At risk": 1, "On track": 2, "Done": 3 };
+  const list = rows.filter(r => (!state.status || r.status === state.status) &&
+    (!q || r.name.toLowerCase().includes(q) || r.owner.toLowerCase().includes(q)))
+    .sort((a, b) => order[a.status] - order[b.status] || b.step - a.step || a.name.localeCompare(b.name));
+  document.getElementById("count").textContent = `· ${list.length} shown${state.status ? " · " + state.status : ""}`;
+  const head = `<tr><th>Initiative</th><th>Owner</th><th>Status</th><th>Escalation</th><th>Action this week</th><th>Why</th></tr>`;
+  const body = list.map(r => {
+    const open = state.open === r.id, steps = [1, 2, 3].map(i => `<i class="${i <= r.step ? "lit" : ""}"></i>`).join("");
+    return `<tr class="prow ${open ? "open" : ""}" data-id="${r.id}">
+      <td><button class="row-btn" aria-expanded="${open}"><span class="caret">▸</span>${esc(r.name)}</button><br><span class="sub">${esc(r.workstream)} · ${esc(r.market)}</span></td>
+      <td>${esc(r.owner)}</td><td><span class="pill ${CLS[r.status]}">${r.status}</span></td>
+      <td class="steps" aria-label="Escalation level ${r.step} of 3">${steps}</td><td style="white-space:nowrap">${esc(WEEK_LABEL[r.week] ?? r.week)}</td>
+      <td class="sub">${esc(r.why)}</td></tr>${open ? detail(r) : ""}`;
+  }).join("");
+  const el = document.getElementById("ptable");
+  el.innerHTML = head + (body || `<tr><td colspan="6" class="empty">No projects match these filters.</td></tr>`);
+  el.querySelectorAll("tr.prow").forEach(tr => tr.onclick = () => { state.open = state.open === tr.dataset.id ? null : tr.dataset.id; render(); });
+  el.querySelectorAll("button.copy").forEach(b => b.onclick = e => {
+    e.stopPropagation();
+    const t = document.getElementById(b.dataset.copy).textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => b.textContent = "Copied", () => b.textContent = "Select and copy");
+  });
+}
+
+function render() {
+  document.querySelectorAll("#f-market button").forEach(b => { const on = b.dataset.v === state.market; b.classList.toggle("on", on); b.setAttribute("aria-pressed", on); });
+  const rows = rowsFor(state.week);
+  renderTiles(rows); renderTrend(); renderLists(rows); renderTable(rows);
+}
+
+async function init() {
+  D = await (await fetch("site-data.json", { cache: "no-store" })).json();
+  state.week = D.weeks[D.weeks.length - 1];
+  const m = document.getElementById("f-market");
+  m.innerHTML = ["All", ...MARKETS].map(x => `<button data-v="${x}" aria-pressed="false">${x}</button>`).join("");
+  m.onclick = e => { if (e.target.dataset.v) { state.market = e.target.dataset.v; state.open = null; render(); } };
+  const ws = [...new Set(Object.values(D.projects).map(p => p.workstream))].sort();
+  const sel = document.getElementById("f-ws");
+  sel.innerHTML = ["All", ...ws].map(w => `<option value="${esc(w)}">${w === "All" ? "All workstreams" : esc(w)}</option>`).join("");
+  sel.onchange = () => { state.ws = sel.value; state.open = null; render(); };
+  document.getElementById("q").oninput = e => { state.q = e.target.value; state.open = null; renderTable(rowsFor(state.week)); };
+  const top = (D.rows[state.week] || []).find(r => r.step === 3 && r.status === "Off track");
+  if (top) state.open = top.id;
+  render();
+}
+init();
+</script>
+</body>
+</html>

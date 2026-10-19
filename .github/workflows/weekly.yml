@@ -1,0 +1,49 @@
+name: Weekly initiative review
+
+# Every Monday morning: read the latest snapshot, rate every initiative,
+# apply the escalation ladder, write the exec update and owner nudges,
+# update the Google Sheet, and commit the new history.
+on:
+  # In the real setup this also runs on a schedule (every Monday):
+  # schedule:
+  #   - cron: "0 1 * * 1"
+  # The demo runs on demand only, because its data doesn't change.
+  workflow_dispatch:
+    inputs:
+      snapshot:
+        description: "Snapshot file to use (default: newest in data/snapshots)"
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: weekly-review
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - run: pip install -r requirements.txt
+
+      - name: Run the weekly review
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+        run: |
+          SNAP="${{ github.event.inputs.snapshot }}"
+          if [ -z "$SNAP" ]; then SNAP=$(ls data/snapshots/*.csv | sort | tail -1); fi
+          python scripts/run_weekly.py --snapshot "$SNAP"
+
+      - name: Save history
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data out site-data.json
+          git diff --staged --quiet || (git commit -m "Weekly review $(date -u +%F)" && git push)

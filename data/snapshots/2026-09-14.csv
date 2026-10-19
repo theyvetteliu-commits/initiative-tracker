@@ -1,0 +1,15 @@
+initiative_id,name,workstream,market,owner,lead,start_date,due_date,progress_pct,last_update,open_blockers,blocker_note
+IN-01,Local payment methods,Payments,India,Arjun K.,Priya R.,2026-07-01,2026-12-15,43,2026-09-11,0,
+IN-02,Referral program v2,Growth marketing,India,Neha S.,Priya R.,2026-08-15,2026-11-30,27,2026-09-12,0,
+JP-01,Loyalty tier relaunch,Product,Japan,Hana S.,Kenji M.,2026-06-01,2026-11-10,61,2026-09-10,0,
+JP-02,Enterprise partner pilot,Partnerships,Japan,Daniel O.,Kenji M.,2026-07-15,2026-10-31,54,2026-09-10,0,
+JP-03,Help centre translation,Brand,Japan,Yui T.,Kenji M.,2026-08-01,2026-10-15,58,2026-09-12,0,
+KR-01,Local pricing rollout,Product,Korea,Minjun P.,Sofia L.,2026-08-01,2026-10-20,52,2026-09-11,0,
+KR-02,Data residency compliance,Policy,Korea,Jiwoo L.,Sofia L.,2026-05-01,2026-10-10,58,2026-09-07,2,Regulator feedback; vendor contract
+KR-03,Creator onboarding flow,Supply,Korea,Seo-yeon H.,Sofia L.,2026-09-01,2027-01-31,9,2026-09-12,0,
+SEA-01,Market entry: Vietnam,Market launch,Southeast Asia,Linh N.,Marco D.,2026-06-15,2027-02-28,30,2026-09-10,0,
+SEA-02,Wallet partnership,Partnerships,Southeast Asia,Rizal A.,Marco D.,2026-08-01,2026-12-20,19,2026-09-05,0,
+SEA-03,Promo engine for campaigns,Growth marketing,Southeast Asia,Thida W.,Marco D.,2026-07-01,2026-11-15,53,2026-09-10,0,
+RG-01,Regional reporting cadence,Operations,Regional,Aisha B.,Marco D.,2026-08-15,2026-11-01,38,2026-09-13,0,
+RG-02,Competitor price tracker,Operations,Regional,Tom W.,Priya R.,2026-09-01,2026-12-01,13,2026-09-11,0,
+RG-03,Brand refresh assets,Brand,Regional,Lea M.,Sofia L.,2026-07-01,2026-10-30,58,2026-09-10,0,

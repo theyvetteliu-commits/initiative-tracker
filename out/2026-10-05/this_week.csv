@@ -1,0 +1,15 @@
+initiative_id,name,workstream,market,owner,lead,due_date,progress_pct,status,why,step,this_week,action
+KR-02,Data residency compliance,Policy,Korea,Jiwoo L.,Sofia L.,2026-10-10,67,Off track,30 pts behind plan; 2 open blockers; due in 5 days at 67%,2,New step 2,Flag to lead: review with owner this week
+SEA-02,Wallet partnership,Partnerships,Southeast Asia,Rizal A.,Marco D.,2026-12-20,17,Off track,29 pts behind plan; no update for 30 days,1,Reminder,Weekly reminder to owner (step 1 in place)
+RG-03,Brand refresh assets,Brand,Regional,Lea M.,Sofia L.,2026-10-30,67,At risk,12 pts behind plan,0,Heads-up,"Heads-up to owner, no step"
+JP-02,Enterprise partner pilot,Partnerships,Japan,Daniel O.,Kenji M.,2026-10-31,67,At risk,no update for 11 days,0,Heads-up,"Heads-up to owner, no step"
+IN-01,Local payment methods,Payments,India,Arjun K.,Priya R.,2026-12-15,45,At risk,12 pts behind plan; 1 open blocker,0,Heads-up,"Heads-up to owner, no step"
+KR-01,Local pricing rollout,Product,Korea,Minjun P.,Sofia L.,2026-10-20,73,At risk,1 open blocker,0,Heads-up,"Heads-up to owner, no step"
+JP-01,Loyalty tier relaunch,Product,Japan,Hana S.,Kenji M.,2026-11-10,64,At risk,14 pts behind plan; 1 open blocker,0,Heads-up,"Heads-up to owner, no step"
+SEA-01,Market entry: Vietnam,Market launch,Southeast Asia,Linh N.,Marco D.,2027-02-28,27,At risk,16 pts behind plan; 1 open blocker,0,Heads-up,"Heads-up to owner, no step"
+RG-02,Competitor price tracker,Operations,Regional,Tom W.,Priya R.,2026-12-01,35,On track,,0,,
+KR-03,Creator onboarding flow,Supply,Korea,Seo-yeon H.,Sofia L.,2027-01-31,20,On track,,0,,
+JP-03,Help centre translation,Brand,Japan,Yui T.,Kenji M.,2026-10-15,87,On track,,0,,
+SEA-03,Promo engine for campaigns,Growth marketing,Southeast Asia,Thida W.,Marco D.,2026-11-15,63,On track,,0,,
+IN-02,Referral program v2,Growth marketing,India,Neha S.,Priya R.,2026-11-30,45,On track,,0,,
+RG-01,Regional reporting cadence,Operations,Regional,Aisha B.,Marco D.,2026-11-01,63,On track,,0,,
